@@ -1,6 +1,0 @@
-{
-  "name": "EvidenceOS",
-  "description": "AI-powered financial investigation platform that transforms scattered business records and WhatsApp logs into connected financial relationship graphs, risk analysis, and fraud simulations.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
