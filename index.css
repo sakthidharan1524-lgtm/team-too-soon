@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+:root {
+  --bg-main: #F7FAF8;
+  --surface-primary: #FFFFFF;
+  --surface-secondary: #F0F5F1;
+  --green-primary: #176B45;
+  --green-dark: #104B32;
+  --green-light: #DDEFE3;
+  --text-primary: #17231E;
+  --text-secondary: #64746B;
+  --border-subtle: #DCE7DF;
+  --status-error: #DC4545;
+  --status-warning: #D99124;
+  --status-success: #248451;
+
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom subtle scrollbars for independent workstation columns */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD9CF;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A9C0B1;
+}
+
+/* Custom range slider for financial stress testing */
+input[type="range"].eos-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border-subtle);
+  outline: none;
+}
+
+input[type="range"].eos-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--green-primary);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(16, 75, 50, 0.35);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+input[type="range"].eos-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  background: var(--green-dark);
+}
+
+@media print {
+  aside,
+  header,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+}
