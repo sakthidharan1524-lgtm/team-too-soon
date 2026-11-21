@@ -1,70 +1,125 @@
 # EvidenceOS
-### Turn scattered financial records into connected, verifiable intelligence.
+### Multimodal financial evidence intelligence for MSME credit assessment
 
-EvidenceOS is an AI-powered financial investigation platform designed to help investigators and analysts understand complex business transactions. It brings documents, transaction records, and relationships into one evidence workspace—making suspicious patterns easier to trace, inspect, and explain.
+EvidenceOS helps lenders and credit analysts investigate the financial evidence of micro, small, and medium enterprises (MSMEs). It brings business documents, extracted financial records, transaction relationships, verification findings, and scenario analysis into one review workspace.
 
-> **Core idea:** Don't just flag an unusual transaction. Show the evidence, the relationships, and the reasoning behind the finding.
+**The central problem:** many small businesses have incomplete or fragmented financial records. A lender may receive bank statements, invoices, ledgers, receipts, loan documents, and business communications that are difficult to reconcile manually. EvidenceOS helps connect those records and surface what is supported, inconsistent, or still missing.
 
----
+> **Evidence first. Credit insight second. Human decision always.**
 
-## The problem
+EvidenceOS is a decision-support prototype. Its indicative readiness assessment is not a bureau credit score, a regulated lending decision, or a substitute for lender underwriting.
 
-Financial investigations often involve fragmented invoices, statements, ledgers, and transaction data. Reviewing these records manually makes it difficult to:
+## Who is it for?
 
-- Connect transactions across multiple entities and documents.
-- Identify circular fund flows and suspicious transaction chains.
-- Trace the origin and movement of money.
-- Explain findings with clear, reviewable supporting evidence.
+- **Primary users:** lenders, credit officers, and MSME underwriting teams.
+- **Evidence providers:** MSME owners who submit business and financial records.
+- **Purpose:** help lenders assess the consistency, traceability, and resilience of the evidence behind a potential credit decision.
 
-## Our solution
+## What EvidenceOS does
 
-EvidenceOS converts unstructured records and transaction data into a connected investigation workspace. It combines document processing, relationship analysis, and AI-assisted investigation so users can move from raw records to evidence-backed findings.
-
-## Key capabilities
-
-| Capability | What it does |
+| Capability | Description |
 |---|---|
-| **Document intelligence** | Extracts relevant information from uploaded financial documents using OCR and text processing. |
-| **Evidence graph** | Maps entities, accounts, documents, and transactions as connected nodes and relationships. |
-| **Transaction tracing** | Helps investigators follow the movement of funds across connected transactions. |
-| **Circular-flow detection** | Identifies potential circular transaction patterns for further review. |
-| **AI investigator** | Supports natural-language exploration of the available evidence and investigation context. |
-| **Scenario stress testing** | Allows users to examine how selected assumptions or transaction changes affect an investigation. |
-| **Verification reports** | Organizes findings and supporting evidence into a reviewable report. |
+| **Multimodal document intake** | Accepts financial evidence such as PDFs, images, text, and CSV-style records for extraction and analysis. |
+| **AI-assisted extraction** | Uses Gemini to identify financial documents, extract structured records, preserve source text, and flag unreadable or uncertain fields for review. |
+| **Evidence verification** | Organizes completeness, consistency, and verification findings so analysts can inspect missing or conflicting information. |
+| **Evidence relationship graph** | Connects businesses, counterparties, documents, invoices, and other evidence entities. |
+| **Transaction graph analysis** | Represents payer-to-receiver transactions and surfaces connected paths and potential circular flows for investigation. |
+| **AI Investigator** | Uses Gemini function calling to query documents, extracted records, entities, transactions, findings, graph relationships, simulations, and credit assessments. |
+| **Indicative credit readiness assessment** | Computes a deterministic financial-readiness assessment and indicative loan capacity from the available financial inputs. |
+| **Repayment resilience simulator** | Runs hypothetical revenue, collection, and expense shocks to show how financial conditions may affect surplus and indicative loan capacity. |
+| **Review and audit support** | Includes data structures for analyst reviews, manual extraction corrections, investigation records, simulation runs, and audit events. |
 
-*Automated findings are investigative leads, not proof of wrongdoing. Human review and source verification remain essential.*
+Automated findings are signals for review, not proof of fraud or misconduct. AI-extracted fields and authenticity indicators must be checked against original records.
 
-## How it works
+## How the workflow operates
 
-1. **Ingest** — Upload financial documents and transaction records.
-2. **Extract** — OCR and text-processing components identify relevant fields and entities.
-3. **Connect** — Records are normalized and linked into an evidence graph.
-4. **Investigate** — Graph analysis surfaces relationships, transaction paths, and potential anomalies.
-5. **Explain** — The AI-assisted workflow helps explore findings while keeping the underlying evidence accessible.
-6. **Verify** — Review the source records and generate a structured investigation report.
+1. **Submit evidence** — The analyst uploads business documents or transaction records.
+2. **Extract information** — Gemini processes supported files and returns structured fields, records, summaries, and uncertainty indicators.
+3. **Inspect and verify** — The workflow surfaces document completeness, extraction issues, and potential inconsistencies.
+4. **Connect records** — Evidence entities and financial transactions are represented as connected graph data.
+5. **Investigate** — The AI Investigator can call purpose-built tools to retrieve records, trace relationships, inspect findings, and run analyses.
+6. **Assess readiness** — Deterministic financial logic calculates an indicative readiness score and loan-capacity estimate from the supplied inputs.
+7. **Stress-test assumptions** — Analysts can model revenue, collection, or expense shocks and compare baseline versus simulated outcomes.
+8. **Review the evidence** — A lender uses the underlying records and findings as decision support. The system does not make the final lending decision.
 
-## System architecture
+## Technical architecture
 
-The platform is designed around a web interface and a separate analysis service.
+The current repository contains a React/Vite application and a Node.js/Express backend-for-frontend (BFF). The BFF exposes the application API, invokes Gemini services, and can optionally proxy selected intelligence endpoints to an external Python FastAPI service.
 
-- **Frontend:** React and TypeScript
-- **Graph visualization:** Cytoscape.js
-- **Analysis API:** Python and FastAPI
-- **Graph analysis:** NetworkX
-- **Document extraction:** OCR and text-matching components
-- **Data layer:** PostgreSQL
-- **AI layer:** Language-model-assisted evidence exploration
+| Layer | Technology / responsibility |
+|---|---|
+| Web application | React 19, TypeScript, Vite |
+| UI and data visualization | Cytoscape.js for graph visualization; Recharts for charts; Tailwind CSS |
+| API / BFF | Node.js, Express, TypeScript, `tsx` |
+| AI integration | Google Gemini SDK (`@google/genai`), server-side API calls, structured JSON responses, function calling |
+| Document handling | Multer in-memory uploads; Gemini-based multimodal extraction |
+| Identity and data foundation | Firebase SDK and Firestore security-rule artifacts |
+| Deterministic analysis | Financial calculation and stress-simulation modules; graph-cycle detection utilities |
+| Optional external intelligence service | Python FastAPI backend, configurable through `PYTHON_BACKEND_URL` |
+| Optional relational data layer | PostgreSQL connection configuration for the external Python service |
 
-The analysis service exposes functionality through REST APIs. Actual records and simulated demonstration data should remain clearly separated.
+### AI Investigator tools
 
-## What makes EvidenceOS different?
+The Gemini function-calling layer exposes specialist tools for:
 
-EvidenceOS is built around **traceability**, not just anomaly alerts.
+1. Searching documents
+2. Retrieving document details
+3. Retrieving extracted records
+4. Searching business entities
+5. Finding matching transactions
+6. Detecting transaction cycles
+7. Retrieving verification findings
+8. Inspecting evidence relationships
+9. Running financial stress simulations
+10. Retrieving the indicative loan assessment
 
-- **Relationship-first investigation:** Understand how records and entities connect.
-- **Evidence-linked findings:** Keep the supporting records close to each investigative result.
-- **Explainable workflow:** Make it easier to inspect why a pattern was surfaced.
-- **Investigator-in-the-loop:** Treat AI output as assistance for human review, not an automatic accusation.
+The model selects tools to investigate a question; application code executes the corresponding operations and returns structured results. Deterministic calculations are kept in application logic rather than delegated to free-form model arithmetic.
+
+### Graph analysis
+
+EvidenceOS distinguishes two related graph views:
+
+- **Evidence knowledge graph:** represents provenance and relationships among businesses, entities, documents, and records.
+- **Financial transaction graph:** represents directed payer-to-receiver transfers and supports bounded cycle detection.
+
+A detected cycle or unusual relationship is an investigation lead. It is not, by itself, evidence of fraud.
+
+## Demo mode and external services
+
+The Node.js BFF supports a demonstration fallback when the optional Python backend is not configured or cannot be reached. In that mode, selected endpoints return the bundled Kaveri demonstration dataset and deterministic demo calculations.
+
+The health endpoint reports whether the Python backend is configured and reachable, whether demo mode is active, and which Gemini models are configured.
+
+**Important distinctions:**
+
+- Demo records are illustrative and must not be represented as real customer or bank data.
+- `PYTHON_BACKEND_URL` is optional. The Python FastAPI service is an external integration point; it is not installed by the root Node.js package.
+- WhatsApp Business Platform webhook handling remains disabled until valid official Cloud API credentials are configured.
+- PaddleOCR is optional and disabled by default in the example environment.
+- A configured integration is not proof that the external service is deployed, reachable, or production-ready.
+
+## API overview
+
+The Node.js service exposes the following routes:
+
+| Route | Purpose |
+|---|---|
+| `GET /health` and `GET /api/health` | Service and integration status |
+| `GET /api/v1/documents` | List evidence documents |
+| `GET /api/v1/documents/:documentId` | Retrieve a document |
+| `POST /api/v1/documents/upload` | Upload a document using multipart form data |
+| `POST /api/v1/documents/upload-base64` | Upload a base64-encoded document |
+| `POST /api/v1/ocr/extract` | Run structured extraction |
+| `POST /api/v1/ocr/recheck` | Recheck extraction/authenticity indicators |
+| `GET /api/v1/graph/evidence` | Retrieve the evidence graph |
+| `GET /api/v1/graph/transactions` | Retrieve the transaction graph |
+| `POST /api/v1/graph/detect-cycles` | Detect bounded directed transaction cycles |
+| `POST /api/v1/credit/assess` | Compute indicative credit readiness |
+| `POST /api/v1/simulations/run` | Run a hypothetical financial stress test |
+| `POST /api/v1/investigations/:investigationId/query` | Query the AI Investigator |
+| `GET/POST /api/v1/integrations/whatsapp/webhook` | WhatsApp webhook endpoints (disabled until configured) |
+
+The shared API contract for the optional Python service is documented in [openapi.yaml](./openapi.yaml).
 
 ## Getting started
 
@@ -72,26 +127,94 @@ EvidenceOS is built around **traceability**, not just anomaly alerts.
 
 - Node.js (LTS recommended)
 - npm
+- A Gemini API key for live AI extraction and investigation features
 
-### Run the frontend
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/sakthidharan1524-lgtm/team-too-soon.git
+cd team-too-soon
+```
+
+### 2. Install dependencies
 
 ```bash
 npm install
+```
+
+### 3. Configure environment variables
+
+Copy the example file:
+
+```bash
+cp .env.example .env
+```
+
+Set your Gemini API key in `.env`:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+GEMINI_MODEL=gemini-3.1-flash-lite
+GEMINI_REASONING_MODEL=gemini-4-hydrogen
+DEMO_MODE=true
+PYTHON_BACKEND_URL=
+BACKEND_SERVICE_TOKEN=
+```
+
+Keep secrets in your local environment. Never commit API keys, service tokens, credentials, or real financial records.
+
+### 4. Start the application
+
+```bash
 npm run dev
 ```
 
-Configure the required environment variables in a local `.env.local` file before running features that depend on external services. Never commit API keys, credentials, or private financial data.
+The Express server starts on port `3000` and mounts the Vite development middleware. Open [http://localhost:3000](http://localhost:3000).
 
-> The frontend and analysis service may be configured and run separately. Backend setup instructions will be added alongside the service implementation.
+### Available scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the Express server with Vite development middleware |
+| `npm run start` | Start the server |
+| `npm run build` | Build the frontend with Vite |
+| `npm run preview` | Preview the Vite production build |
+| `npm run lint` | Run the TypeScript no-emit check |
+
+## Configuration reference
+
+| Variable | Purpose |
+|---|---|
+| `GEMINI_API_KEY` | Server-side Gemini API authentication |
+| `GEMINI_MODEL` | Configurable extraction model |
+| `GEMINI_REASONING_MODEL` | Configurable reasoning/video model |
+| `APP_URL` | Hosted application URL |
+| `PYTHON_BACKEND_URL` | Optional external FastAPI service base URL |
+| `BACKEND_SERVICE_TOKEN` | Optional bearer token for the external service |
+| `DEMO_MODE` | Enables demo fallback behavior unless explicitly set to `false` |
+| `DATABASE_URL` | PostgreSQL URL for the optional Python service |
+| `ENABLE_PADDLE_OCR` | Optional PaddleOCR integration flag |
+| `WHATSAPP_ACCESS_TOKEN` | Official WhatsApp Cloud API access token |
+| `WHATSAPP_VERIFY_TOKEN` | WhatsApp webhook verification token |
+| `WHATSAPP_APP_SECRET` | WhatsApp app secret for webhook integration |
+
+## Responsible use and limitations
+
+- EvidenceOS provides decision support, not autonomous loan approval or rejection.
+- The indicative readiness score is a project-defined assessment, not an official bureau score or regulated credit rating.
+- OCR and AI extraction can be wrong, especially with poor-quality scans, handwriting, or incomplete records.
+- AI-generated/synthetic-document indicators are probabilistic signals, not forensic certification or legal proof.
+- Circular transaction patterns and graph anomalies require contextual investigation; legitimate business activity can produce unusual-looking patterns.
+- Stress-test outputs are hypothetical and depend on the assumptions and inputs supplied.
+- Demo data must remain clearly labelled and separated from real customer data.
+- Production lending use requires validation, security review, access controls, auditability, privacy safeguards, and independent testing.
 
 ## Project status
 
-EvidenceOS is an evolving project. Features and integrations are under active development; the repository is the source of truth for the current implementation.
+EvidenceOS is an evolving prototype. The repository contains the Node.js application integration, Gemini service layer, API routes, demo-mode logic, configuration artifacts, and supporting application modules. Optional external services and integrations must be configured and tested separately.
 
-## Responsible use
+Do not assume a feature is production-ready solely because its interface or API route exists.
 
-EvidenceOS is intended to support financial review and investigation. It does not independently determine fraud, legal liability, or criminal intent. All flagged patterns require validation against original records and appropriate human oversight.
+## Team
 
----
-
-**Built by Team Too Soon**
+**Built by Team Too Soon.**
