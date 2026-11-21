@@ -1,0 +1,50 @@
+openapi: 3.1.0
+info:
+  title: EvidenceOS API Contract
+  version: 1.0.0
+  description: Shared REST API contract between the Node.js BFF and the external Python FastAPI intelligence service.
+paths:
+  /health:
+    get:
+      summary: Service health and integration status
+  /api/v1/documents/upload:
+    post:
+      summary: Upload financial evidence and run multimodal Gemini OCR / video analysis
+  /api/v1/documents:
+    get:
+      summary: List workspace financial evidence documents
+  /api/v1/documents/{document_id}:
+    get:
+      summary: Retrieve single document metadata and extracted records
+  /api/v1/ocr/extract:
+    post:
+      summary: Trigger or re-run structured Gemini JSON OCR extraction
+  /api/v1/verification/run:
+    post:
+      summary: Execute deterministic financial verification rules
+  /api/v1/verification/findings:
+    get:
+      summary: List verification findings and evidence alerts
+  /api/v1/graph/evidence:
+    get:
+      summary: Retrieve Evidence Knowledge Graph (networkx.MultiDiGraph)
+  /api/v1/graph/transactions:
+    get:
+      summary: Retrieve Financial Transaction Graph (Payer -> Receiver)
+  /api/v1/graph/detect-cycles:
+    post:
+      summary: Detect bounded circular transaction paths
+  /api/v1/credit/assess:
+    post:
+      summary: Compute deterministic EvidenceOS Readiness Score and Indicative Loan Capacity
+  /api/v1/investigations/{investigation_id}/query:
+    post:
+      summary: Query the AI Investigator Agent with Gemini function calling and search grounding
+  /api/v1/simulations/run:
+    post:
+      summary: Execute isolated hypothetical stress test (simulated=true)
+  /api/v1/integrations/whatsapp/webhook:
+    get:
+      summary: Verify official WhatsApp Business Platform Cloud API webhook
+    post:
+      summary: Receive incoming WhatsApp text, image, or PDF evidence webhooks
